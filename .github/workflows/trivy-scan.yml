@@ -1,0 +1,32 @@
+name: Trivy Container Vulnerability Scan
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.51.1_Linux-64bit.deb
+          sudo dpkg -i trivy_0.51.1_Linux-64bit.deb
+
+      - name: Build Docker image
+        run: docker build -t my-app:${{ github.sha }} .
+
+      - name: Run Trivy vulnerability scan
+        run: |
+          chmod +x scan_trivy.sh
+          ./scan_trivy.sh my-app:${{ github.sha }}
