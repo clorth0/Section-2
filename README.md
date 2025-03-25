@@ -16,8 +16,6 @@ failing the pipeline.
 
 ## Solution Overview
 
-This repository contains a complete open-source implementation that meets the requirements using:
-
 - **Trivy**: An open-source vulnerability scanner for container images, file systems, and Infrastructure as Code (IaC).
 - **GitHub Actions**: To automate the scanning process in a CI/CD pipeline.
 
